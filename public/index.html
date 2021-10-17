@@ -263,16 +263,16 @@ $ git push</pre>
                   and APPLICATION_PASSWORD parameter values in the template, then the default login/password is openshift/secret.                  
                   </p>
                   <p>
-                  It will also be necessary to define a database service for the application to use.  The <code>config/database.yml</code> file used by rails was set up in such a way that it will accept environment variables for database connection information.  After creating a PostgreSQL database service in your project, you can add the following environment variables to your deploymentConfig to ensure all your frontend pods have access to these environment variables.
-                  Note: the rails-postgresql.json template creates the database service and environment variables for you.
+                  It will also be necessary to define a database service for the application to use.  The <code>config/database.yml</code> file used by rails was set up in such a way that it will accept environment variables for database connection information.  After creating a mariadb-galera database service in your project, you can add the following environment variables to your deploymentConfig to ensure all your frontend pods have access to these environment variables.
+                  Note: the mariadb-galera-persistent-storageclass.json template creates the database service and environment variables for you.
 
 <pre>
 oc env dc/rails-frontend DATABASE_SERVICE_NAME=&lt;database service name&gt;
 oc env dc/rails-frontend &lt;DATABASE_SERVICE_NAME&gt;_SERVICE_HOST=&lt;database service ip&gt;
 oc env dc/rails-frontend &lt;DATABASE_SERVICE_NAME&gt;_SERVICE_PORT=&lt;database service port&gt;
-oc env dc/rails-frontend POSTGRESQL_DATABASE=&lt;your created database&gt;
-oc env dc/rails-frontend POSTGRESQL_USER=&lt;your database user&gt;
-oc env dc/rails-frontend POSTGRESQL_PASSWORD=&lt;your database user's password&gt;
+oc env dc/rails-frontend MYSQL_DATABASE=&lt;your created database&gt;
+oc env dc/rails-frontend MYSQL_USER=&lt;your database user&gt;
+oc env dc/rails-frontend MYSQL_PASSWORD=&lt;your database user's password&gt;
 </pre>
                   </p>
                   <p>

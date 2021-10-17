@@ -46,7 +46,7 @@ TLDR: OpenShift can generate and expose environment variables to your applicatio
 ### Development mode
 When you develop your Rails application in OpenShift, you can also enable the 'development' environment by setting the RAILS_ENV environment variable for your deploymentConfiguration, using the `oc` client, like:  
 
-		$ oc env dc/rails-postgresql-example RAILS_ENV=development
+		$ oc env dc/rails-mysql-example RAILS_ENV=development
 
 
 If you do so, OpenShift will run your application under 'development' mode. In development mode, your application will:  
@@ -62,44 +62,45 @@ These steps assume your OpenShift deployment has the default set of ImageStreams
 2. Clone your repository to your development machine and cd to the repository directory
 3. Add a Ruby application from the rails template:
 
-		$ oc new-app openshift/templates/rails-postgresql.json -p SOURCE_REPOSITORY_URL=https://github.com/< yourusername >/rails-ex 
+		$ oc new-app openshift/templates/rails-mysql.json -p SOURCE_REPOSITORY_URL=https://github.com/< yourusername >/rails-ex 
 
 4. Depending on the state of your system, and whether additional items need to be downloaded, it may take around a minute for your build to be started automatically.  If you do not want to wait, run
 
-		$ oc start-build rails-postgresql-example
+		$ oc start-build rails-mysql-example
 
 5. Once the build is running, watch your build progress  
 
-		$ oc logs build/rails-postgresql-example-1
+		$ oc logs build/rails-mysql-example-1
 
-6. Wait for rails-postgresql-example pods to start up (this can take a few minutes):  
+6. Wait for rails-mysql-example pods to start up (this can take a few minutes):  
 
 		$ oc get pods -w
 
 
 	Sample output:  
 
-		NAME                    READY     REASON         RESTARTS   AGE
-		postgresql-1-vk6ny                   1/1       Running        0          4m
-		rails-postgresql-example-1-build     0/1       ExitCode:0     0          3m
-		rails-postgresql-example-1-deploy    1/1       Running        0          34s
-		rails-postgresql-example-1-prehook   0/1       ExitCode:0     0          32s
+                NAME                                            READY   STATUS      RESTARTS   AGE
+                galera-0                                        1/1     Running     0          2d1h
+                galera-1                                        1/1     Running     0          2d1h
+                galera-2                                        1/1     Running     0          2d1h
+                rails-mysql-persistent-1-build                  0/1     Completed   0          3d14h
+		rails-mysql-persistent-1-deploy                 1/1     Running     0          3d14h
+                rails-mysql-persistent-1-hook-pre               0/1     Completed   0          3d14h
 
 
-
-7. Check the IP and port the rails-postgresql-example service is running on:  
+7. Check the IP and port the rails-mysql-example service is running on:  
 
 		$ oc get svc
 
 
 	Sample output:  
 
-		NAME             LABELS                              SELECTOR              IP(S)           PORT(S)
-		postgresql                 template=rails-postgresql-example   name=postgresql                 172.30.197.40    5432/TCP
-		rails-postgresql-example   template=rails-postgresql-example   name=rails-postgresql-example   172.30.205.117   8080/TCP
+                NAME                           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+                galera                         ClusterIP   None            <none>        3306/TCP                     2d1h
+                rails-mysql-persistent         ClusterIP   172.30.211.26   <none>        8080/TCP                     3d14h
 
 
-In this case, the IP for rails-postgresql-example rails-postgresql-example is 172.30.205.117 and it is on port 8080.  
+In this case, the IP for rails-mysql-example rails-mysql-example is 172.30.211.267 and it is on port 8080.  
 *Note*: you can also get this information from the web console.
 
 
@@ -131,7 +132,7 @@ The username/pw used for authentication in this application are openshift/secret
 
 In order to dynamically pick up changes made in your application source code, you need to set the `RAILS_ENV=development` parameter to the [oc new-app](https://docs.okd.io/latest/cli_reference/basic_cli_operations.html#basic-cli-operations) command, while performing the [installation steps](https://github.com/sclorg/rails-ex#installation) described in this README.
 
-	$ oc new-app openshift/templates/rails-postgresql.json -p RAILS_ENV=development
+	$ oc new-app openshift/templates/mariadb-galera-persistent-storageclass.json -p RAILS_ENV=development
 
 To change your source code in the running container you need to [oc rsh](https://docs.okd.io/latest/cli_reference/basic_cli_operations.html#troubleshooting-and-debugging-cli-operations) into it.
 
@@ -141,13 +142,13 @@ After you [oc rsh](https://docs.okd.io/latest/cli_reference/basic_cli_operations
 
 To set your application back to the `production` environment you need to remove `RAILS_ENV` environment variable:
 
-	$ oc env dc/rails-postgresql-example RAILS_ENV-
+	$ oc env dc/rails-mysql-example RAILS_ENV-
 
 A redeploy will happen automatically due to the `ConfigChange` trigger.
 
 **NOTICE: If the `ConfigChange`  trigger is not set, you need to run the redeploy manually:**
  
-	$ oc deploy rails-postgresql-example --latest
+	$ oc deploy rails-mysql-example --latest
 
 ### Compatibility
 
