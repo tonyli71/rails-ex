@@ -24,7 +24,7 @@ metadata:
     samples.operator.openshift.io/managed: "true"
   name: mariadb-galera-persistent-storageclass
   namespace: my-mariadb-galera-app
-  resourceVersion: "11554323"
+  resourceVersion: "11592017"
   uid: 488fa83f-73e3-4e60-8443-9ebb593e339e
 objects:
 - apiVersion: v1
@@ -34,6 +34,7 @@ objects:
   stringData:
     application-password: ${APPLICATION_PASSWORD}
     application-user: ${APPLICATION_USER}
+    database-name: ${MYSQL_DATABASE}
     database-password: ${DATABASE_PASSWORD}
     database-user: ${DATABASE_USER}
     database-user-password: ${DATABASE_USER_PASSWORD}
@@ -124,7 +125,10 @@ objects:
                 key: database-user-password
                 name: ${NAME}
           - name: MYSQL_DATABASE
-            value: ${DATABASE_NAME}
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: ${NAME}
           - name: MYSQL_ROOT_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -283,7 +287,10 @@ objects:
                 key: keybase
                 name: ${NAME}
           - name: MYSQL_DATABASE
-            value: ${DATABASE_NAME}
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: ${NAME}
           - name: APPLICATION_DOMAIN
             value: ${APPLICATION_DOMAIN}
           - name: APPLICATION_USER

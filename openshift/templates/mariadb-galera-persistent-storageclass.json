@@ -21,7 +21,7 @@
         },
         "name": "mariadb-galera-persistent-storageclass",
         "namespace": "my-mariadb-galera-app",
-        "resourceVersion": "11554323",
+        "resourceVersion": "11592017",
         "uid": "488fa83f-73e3-4e60-8443-9ebb593e339e"
     },
     "objects": [
@@ -34,6 +34,7 @@
             "stringData": {
                 "application-password": "${APPLICATION_PASSWORD}",
                 "application-user": "${APPLICATION_USER}",
+                "database-name": "${MYSQL_DATABASE}",
                 "database-password": "${DATABASE_PASSWORD}",
                 "database-user": "${DATABASE_USER}",
                 "database-user-password": "${DATABASE_USER_PASSWORD}",
@@ -175,7 +176,12 @@
                                     },
                                     {
                                         "name": "MYSQL_DATABASE",
-                                        "value": "${DATABASE_NAME}"
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-name",
+                                                "name": "${NAME}"
+                                            }
+                                        }
                                     },
                                     {
                                         "name": "MYSQL_ROOT_PASSWORD",
@@ -440,7 +446,12 @@
                                     },
                                     {
                                         "name": "MYSQL_DATABASE",
-                                        "value": "${DATABASE_NAME}"
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "database-name",
+                                                "name": "${NAME}"
+                                            }
+                                        }
                                     },
                                     {
                                         "name": "APPLICATION_DOMAIN",
