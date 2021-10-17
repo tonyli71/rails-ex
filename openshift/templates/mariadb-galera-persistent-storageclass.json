@@ -21,7 +21,7 @@
         },
         "name": "mariadb-galera-persistent-storageclass",
         "namespace": "my-mariadb-galera-app",
-        "resourceVersion": "9091694",
+        "resourceVersion": "11407274",
         "uid": "488fa83f-73e3-4e60-8443-9ebb593e339e"
     },
     "objects": [
@@ -101,16 +101,6 @@
                     "kind": "Service",
                     "name": "${NAME}"
                 }
-            }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "ImageStream",
-            "metadata": {
-                "annotations": {
-                    "description": "Keeps track of changes in the application image"
-                },
-                "name": "${NAME}"
             }
         },
         {
@@ -679,4 +669,3 @@
         }
     ]
 }
-
