@@ -1,7 +1,7 @@
 # PostgreSQL. Versions 8.2 and up are supported.
 
-<% user = ENV.key?("POSTGRESQL_ADMIN_PASSWORD") ? "root" : ENV["POSTGRESQL_USER"] %>
-<% password = ENV.key?("POSTGRESQL_ADMIN_PASSWORD") ? ENV["POSTGRESQL_ADMIN_PASSWORD"] : ENV["POSTGRESQL_PASSWORD"] %>
+<% user = ENV.key?("MYSQL_ADMIN_PASSWORD") ? "root" : ENV["MYSQL_USER"] %>
+<% password = ENV.key?("MYSQL_ADMIN_PASSWORD") ? ENV["MYSQL_ADMIN_PASSWORD"] : ENV["MYSQL_PASSWORD"] %>
 <% db_service = ENV.fetch("DATABASE_SERVICE_NAME","").upcase %>
 
 default: &default
@@ -13,8 +13,8 @@ default: &default
   database: <%= ENV["MYSQL_DATABASE"] %>
   advisory_locks: false
   pool: <%= ENV["MYSQL_MAX_CONNECTIONS"] || 5 %>
-  username: <%= ENV["MYSQL_USER"] %>
-  password: <%= ENV["MYSQL_PASSWORD"] %>
+  username: <%= user %>
+  password: <%= password %>
   host: <%= ENV["DATABASE_SERVICE_NAME"] %>.<%= ENV["POD_NAMESPACE"] %>.svc.cluster.local
   port: 3306
 
