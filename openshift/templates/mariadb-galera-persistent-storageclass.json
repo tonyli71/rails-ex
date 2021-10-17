@@ -21,7 +21,7 @@
         },
         "name": "mariadb-galera-persistent-storageclass",
         "namespace": "my-mariadb-galera-app",
-        "resourceVersion": "11407274",
+        "resourceVersion": "11554323",
         "uid": "488fa83f-73e3-4e60-8443-9ebb593e339e"
     },
     "objects": [
@@ -403,6 +403,15 @@
                                         "value": "${DATABASE_SERVICE_NAME}"
                                     },
                                     {
+                                        "name": "POD_NAMESPACE",
+                                        "valueFrom": {
+                                            "fieldRef": {
+                                                "apiVersion": "v1",
+                                                "fieldPath": "metadata.namespace"
+                                            }
+                                        }
+                                    },
+                                    {
                                         "name": "MYSQL_USER",
                                         "valueFrom": {
                                             "secretKeyRef": {
@@ -412,7 +421,7 @@
                                         }
                                     },
                                     {
-                                        "name": "MYSQL_USER_PASSWORD",
+                                        "name": "MYSQL_PASSWORD",
                                         "valueFrom": {
                                             "secretKeyRef": {
                                                 "key": "database-user-password",
@@ -626,15 +635,13 @@
         },
         {
             "displayName": "Database Password, The password for the root user",
-            "from": "[a-zA-Z0-9]{12}",
-            "generate": "expression",
-            "name": "DATABASE_PASSWORD"
+            "name": "DATABASE_PASSWORD",
+            "value": "redhat"
         },
         {
             "description": "The password for the DATABASE_USER",
-            "from": "[a-zA-Z0-9]{12}",
-            "generate": "expression",
-            "name": "DATABASE_USER_PASSWORD"
+            "name": "DATABASE_USER_PASSWORD",
+            "value": "redhat"
         },
         {
             "description": "The application user that is used within the sample application to authorize access on pages.",
